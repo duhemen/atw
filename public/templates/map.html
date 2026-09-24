@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="atw-layout">
+
+    <!-- SIDEBAR KIRI -->
+    <aside class="atw-sidebar-left">
+        <div class="sidebar-section">
+            <h2>Layer</h2>
+            <div class="sidebar-section">
+                <h2>Pencarian</h2>
+                <div class="search-box">
+                    <input type="text" id="search-input" 
+                        placeholder="Cari kabupaten/kota..." 
+                        autocomplete="off">
+                    <div id="search-results" class="search-results"></div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <h2>Dokumentasi</h2>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggle-photos">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-label">Tampilkan Marker Foto</span>
+                </label>
+                <div class="photo-count" id="photo-count">Memuat...</div>
+            </div>
+            <div class="sidebar-section">
+                <h2>Zoom Cepat</h2>
+                <div class="quick-zoom">
+                    <button class="qz-btn" data-lat="-2.2" data-lng="113.9" data-zoom="7">
+                        🎯 Pilot Kalteng
+                    </button>
+                    <button class="qz-btn" data-lat="-2.5" data-lng="118.0" data-zoom="5">
+                        🇮🇩 Indonesia
+                    </button>
+                </div>
+            </div>
+            <div class="layer-buttons">
+                <button class="layer-btn" data-level="provinsi">Provinsi ({{ counts.provinsi }})</button>
+                <button class="layer-btn active" data-level="kabupaten">Kabupaten ({{ counts.kabupaten }})</button>
+                <button class="layer-btn" data-level="kecamatan">Kecamatan ({{ "{:,}".format(counts.kecamatan) }})</button>
+                <button class="layer-btn heavy" data-level="kelurahan">Kelurahan ({{ "{:,}".format(counts.kelurahan) }}) ⚠️</button>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <h2>Statistik</h2>
+            <ul class="stats-list">
+                <li><span>Total Wilayah</span><strong>{{ "{:,}".format(total) }}</strong></li>
+                <li><span>Provinsi</span><strong>{{ counts.provinsi }}</strong></li>
+                <li><span>Kabupaten/Kota</span><strong>{{ counts.kabupaten }}</strong></li>
+                <li><span>Kecamatan</span><strong>{{ "{:,}".format(counts.kecamatan) }}</strong></li>
+                <li><span>Kelurahan/Desa</span><strong>{{ "{:,}".format(counts.kelurahan) }}</strong></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <h2>Legenda Anggaran</h2>
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #16a34a"></span>
+                    <span>Baik (≥80%)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #f59e0b"></span>
+                    <span>Sedang (60–80%)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #dc2626"></span>
+                    <span>Rendah (&lt;60%)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #94a3b8; opacity: 0.3"></span>
+                    <span>Belum ada data</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- PETA -->
+    <div id="map" class="atw-map"></div>
+
+    <!-- PANEL DETAIL KANAN -->
+    <aside id="detail-panel" class="atw-sidebar-right collapsed">
+        <button id="detail-close" class="detail-close" title="Tutup">×</button>
+        <div id="detail-content" class="detail-content">
+            <div class="detail-placeholder">
+                <span class="detail-placeholder-icon">👆</span>
+                <p>Klik wilayah di peta untuk melihat detail anggaran</p>
+            </div>
+        </div>
+    </aside>
+
+</div>
+
+<!-- MODAL UPLOAD -->
+<div id="photo-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" id="photo-modal-close">×</button>
+        <h2 class="modal-title">📷 Tambah Dokumentasi Foto</h2>
+        <p class="modal-subtitle" id="photo-modal-region">Region: —</p>
+        
+        <form id="photo-form">
+            <input type="hidden" id="photo-region-id" name="region_id">
+
+            <div class="form-group">
+                <label>Foto <span class="required">*</span></label>
+                <input type="file" id="photo-file" name="file" accept="image/jpeg,image/png,image/webp" required>
+                <small class="form-hint">Format: JPG, PNG, WebP. Maks 5 MB.</small>
+            </div>
+
+            <div class="form-group">
+                <label>Judul <span class="required">*</span></label>
+                <input type="text" id="photo-title" name="title" required
+                       maxlength="200" placeholder="Contoh: Jalan rusak di Desa X">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Kategori <span class="required">*</span></label>
+                    <select id="photo-category" name="category" required>
+                        <option value="">— Pilih —</option>
+                        <option value="sekolah">🏫 Sekolah</option>
+                        <option value="jalan">🛣️ Jalan</option>
+                        <option value="jembatan">🌉 Jembatan</option>
+                        <option value="kesehatan">🩺 Kesehatan</option>
+                        <option value="irigasi">💧 Irigasi</option>
+                        <option value="gambut">🌾 Lahan Gambut</option>
+                        <option value="lainnya">📝 Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <div class="info-banner">
+                        👤 Melapor sebagai: <strong id="photo-current-user">—</strong>
+                    </div>
+                </div>
+
+            <div class="form-group">
+                <label>Deskripsi <span class="optional">(opsional)</span></label>
+                <textarea id="photo-desc" name="description" rows="4" maxlength="2000"
+                          placeholder="Ceritakan kondisi di lapangan..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>📍 Lokasi GPS</label>
+                <div class="gps-row">
+                    <input type="number" id="photo-lat" name="latitude" step="any"
+                           placeholder="Latitude" readonly>
+                    <input type="number" id="photo-lng" name="longitude" step="any"
+                           placeholder="Longitude" readonly>
+                    <button type="button" id="photo-get-gps" class="btn-gps" title="Deteksi otomatis">📍</button>
+                </div>
+                <small class="form-hint">Klik 📍 untuk deteksi lokasi saat ini, atau klik peta untuk pilih lokasi.</small>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" id="photo-submit">
+                    📤 Upload Foto
+                </button>
+                <button type="button" class="btn-secondary" id="photo-cancel">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/map.js') }}"></script>
+{% endblock %}

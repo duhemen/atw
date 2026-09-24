@@ -1,0 +1,45 @@
+name: atw-fvi
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.11
+  - pip
+
+  # Data & Statistik (dari conda-forge)
+  - pandas=2.2
+  - numpy=1.26
+  - scipy=1.14
+  - scikit-learn=1.5
+  - statsmodels=0.14
+
+  # Bayesian & Monte Carlo
+  - pymc=5.16
+  - arviz=0.19
+
+  # Visualisasi
+  - matplotlib=3.9
+  - seaborn=0.13
+  - plotly=5.24
+
+  # Database
+  - sqlalchemy=2.0
+  - psycopg2=2.9
+  - geoalchemy2=0.15
+  - duckdb=1.1
+
+  # Web
+  - fastapi=0.115
+  - uvicorn=0.32
+
+  # Utils
+  - loguru=0.7
+  - joblib=1.4
+  - tqdm=4.66
+
+  # PyTorch via pip (lebih andal untuk CUDA di Windows)
+  - pip:
+      - torch==2.4.1
+      - torchvision==0.19.1
+      - torchaudio==2.4.1
+      - pmdarima==2.0.4

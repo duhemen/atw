@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="verify-page">
+    <h1>🔍 Verifikasi Foto</h1>
+    <p class="verify-subtitle">
+        Login sebagai: <strong>{{ user.full_name or user.username }}</strong> ({{ user.role }})
+    </p>
+
+    <div id="verify-alert" class="feedback-alert" style="display:none"></div>
+    <div id="pending-list" class="pending-list">Memuat...</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/verify.js') }}"></script>
+{% endblock %}

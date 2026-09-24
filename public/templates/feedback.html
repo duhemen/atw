@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="feedback-page">
+    <div class="feedback-container">
+
+        <div class="feedback-header">
+            <h1>📬 Kirim Feedback</h1>
+            <p>Bantu kami memperbaiki ATW. Laporkan bug, sarankan fitur, atau koreksi data.</p>
+        </div>
+
+        <div id="feedback-alert" class="feedback-alert" style="display: none;"></div>
+
+        <form id="feedback-form" class="feedback-form">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fb-name">Nama <span class="optional">(opsional)</span></label>
+                    <input type="text" id="fb-name" name="name" maxlength="100"
+                           placeholder="Nama atau anonim">
+                </div>
+                <div class="form-group">
+                    <label for="fb-email">Email <span class="optional">(opsional)</span></label>
+                    <input type="email" id="fb-email" name="email" maxlength="150"
+                           placeholder="email@example.com">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fb-category">Kategori <span class="required">*</span></label>
+                    <select id="fb-category" name="category" required>
+                        <option value="">— Pilih kategori —</option>
+                        <option value="bug_report">🐞 Laporan Bug</option>
+                        <option value="data_issue">📊 Data Tidak Akurat</option>
+                        <option value="suggestion">💡 Saran Fitur</option>
+                        <option value="question">❓ Pertanyaan</option>
+                        <option value="other">📝 Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fb-region">Wilayah Terkait <span class="optional">(opsional)</span></label>
+                    <select id="fb-region" name="region_id">
+                        <option value="">— Tidak spesifik —</option>
+                        {% for r in regions %}
+                        <option value="{{ r.id }}">{{ r.nama }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fb-subject">Subjek <span class="required">*</span></label>
+                <input type="text" id="fb-subject" name="subject" required
+                       maxlength="200" placeholder="Ringkasan singkat feedback Anda">
+            </div>
+
+            <div class="form-group">
+                <label for="fb-message">Pesan <span class="required">*</span></label>
+                <textarea id="fb-message" name="message" required rows="8" maxlength="3000"
+                          placeholder="Jelaskan feedback Anda secara detail... (maks. 3000 karakter)"></textarea>
+                <div class="char-count"><span id="fb-count">0</span> / 3000</div>
+            </div>
+
+            <!-- Honeypot anti-spam: field ini tidak boleh diisi -->
+            <div class="form-group honeypot" aria-hidden="true">
+                <label for="fb-website">Website</label>
+                <input type="text" id="fb-website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" id="fb-submit" class="btn-primary">
+                    📨 Kirim Feedback
+                </button>
+                <button type="reset" class="btn-secondary">Reset</button>
+            </div>
+
+            <p class="form-note">
+                Dengan mengirim feedback, Anda setuju bahwa pesan Anda dapat kami gunakan untuk perbaikan platform.
+                Email hanya dipakai untuk follow-up jika diperlukan.
+            </p>
+
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/feedback.js') }}"></script>
+{% endblock %}

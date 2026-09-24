@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header class="atw-header">
+        <div class="atw-logo">
+            <span class="atw-logo-icon">🌾</span>
+            <div>
+                <h1>ATW</h1>
+                <p>Anggaran Transparency Watch</p>
+            </div>
+        </div>
+        <nav class="atw-nav">
+            <a href="/" class="{% if active_page == 'map' %}active{% endif %}">Peta</a>
+            <a href="/feedback" class="{% if active_page == 'feedback' %}active{% endif %}">Feedback</a>
+
+            {% if user %}
+                {% if user.role in ('verifikator', 'admin') %}
+                <a href="/verify" class="{% if active_page == 'verify' %}active{% endif %}">Verifikasi</a>
+                {% endif %}
+                <span class="nav-user" title="{{ user.email }}">
+                    👤 {{ user.full_name or user.username }}
+                </span>
+                <a href="#" onclick="event.preventDefault(); logout();">Logout</a>
+            {% else %}
+                <a href="/login" class="{% if active_page == 'login' %}active{% endif %}">Login</a>
+            {% endif %}
+        </nav>
+
+        <script>
+        async function logout() {
+            if (!confirm('Logout dari ATW?')) return;
+            await fetch('/api/auth/logout', { method: 'POST' });
+            window.location.href = '/';
+        }
+        </script>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="atw-footer">
+        <span>ATW v0.1.0 — Platform Transparansi Anggaran</span>
+        <span>{{ total }} wilayah administratif Indonesia</span>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
