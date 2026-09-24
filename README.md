@@ -494,11 +494,80 @@ SOFTWARE.
 
 ## 🙏 Ucapan Terima Kasih
 
-- **[cahyadsn/wilayah_boundaries](https://github.com/cahyadsn/wilayah_boundaries)** — Data batas wilayah administratif Indonesia
-- **[Leaflet.js](https://leafletjs.com)** — Peta interaktif
-- **[OpenStreetMap](https://www.openstreetmap.org)** — Base map
-- **[FastAPI](https://fastapi.tiangolo.com)** — Web framework modern
+ATW tidak akan ada tanpa kerja keras dan dedikasi para developer open-source Indonesia. Kami ucapkan terima kasih yang sebesar-besarnya:
+
+### 🌾 Fondasi Data & Metodologi
+
+<table>
+<tr>
+<td width="60px" align="center">
+<img src="https://img.shields.io/badge/⭐-gold?style=for-the-badge" alt="Main">
+</td>
+<td>
+
+**[cahyadsn/wilayah_boundaries](https://github.com/cahyadsn/wilayah_boundaries)**  
+oleh **[Cahya DSN](https://github.com/cahyadsn)**
+
+Dataset batas wilayah administratif Indonesia yang lengkap — dari **provinsi hingga kelurahan/desa** (90.818 wilayah). Repo ini menjadi **fondasi spasial** seluruh sistem ATW. Tanpa dataset ini, tidak akan ada peta choropleth, tidak ada tracking proyek per desa, tidak ada analisis fiskal berbasis lokasi.
+
+🌐 [github.com/cahyadsn/wilayah_boundaries](https://github.com/cahyadsn/wilayah_boundaries)  
+📄 Lisensi: MIT
+
+</td>
+</tr>
+
+<tr>
+<td width="60px" align="center">
+<img src="https://img.shields.io/badge/⭐-gold?style=for-the-badge" alt="Main">
+</td>
+<td>
+
+**[mellygsln/peatfr](https://github.com/mellygsln/peatfr)**  
+oleh **[mellygsln](https://github.com/mellygsln)**
+
+Paket R untuk prediksi risiko kebakaran lahan gambut tropis — menyediakan **kerangka metodologi** yang kami adopsi untuk FVI (Fiscal Vulnerability Index) di modul internal ATW:
+- Imputasi data (KNN, spline, linear, loess)
+- Peramalan deret waktu (ARIMA + Box-Cox, LSTM, GRU)
+- Optimasi parameter dengan **Nelder-Mead**
+- Perhitungan indeks komposit (Peat Fire Vulnerability Index → Fiscal Vulnerability Index)
+
+Repo ini menjadi **cetak biru metodologis** untuk decision-support engine ATW.
+
+🌐 [github.com/mellygsln/peatfr](https://github.com/mellygsln/peatfr)
+
+</td>
+</tr>
+</table>
+
+### 🛠️ Infrastruktur & Tools
+
+- **[Leaflet.js](https://leafletjs.com)** — Peta interaktif open-source
+- **[OpenStreetMap](https://www.openstreetmap.org)** — Base map & data geografis
+- **[FastAPI](https://fastapi.tiangolo.com)** — Web framework Python modern & cepat
 - **[PostGIS](https://postgis.net)** — Ekstensi spasial PostgreSQL
+- **[SQLAlchemy](https://www.sqlalchemy.org)** — ORM Python
+- **[GeoPandas](https://geopandas.org)** — Manipulasi data geospasial
+- **[Statsmodels](https://www.statsmodels.org)** — Analisis statistik (ARIMA)
+- **[PyTorch](https://pytorch.org)** — Deep learning (LSTM/GRU)
+
+### 🇮🇩 Untuk Indonesia
+
+Terima kasih kepada **seluruh kontributor open-source Indonesia** yang telah membagikan data, kode, dan pengetahuan mereka secara bebas. Semoga ATW dapat berkontribusi balik untuk **transparansi anggaran** dan **tata kelola publik yang lebih baik** di Indonesia.
+
+> *"Kalau bukan kita yang membangun, siapa lagi? Kalau bukan sekarang, kapan lagi?"*
+
+---
+
+### 📜 Atribusi Data
+
+ATW menggunakan data dari sumber-sumber berikut dengan lisensi masing-masing:
+
+| Sumber | Konten | Lisensi |
+|---|---|---|
+| [cahyadsn/wilayah_boundaries](https://github.com/cahyadsn/wilayah_boundaries) | Batas wilayah administratif Indonesia | MIT |
+| [mellygsln/peatfr](https://github.com/mellygsln/peatfr) | Metodologi prediksi risiko (referensi) | Lihat repo |
+| [OpenStreetMap](https://www.openstreetmap.org) | Base map tiles | ODbL |
+| Data APBD/DJPK/LPSE | Data fiskal (roadmap) | Publik |
 
 ---
 
